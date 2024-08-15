@@ -34,13 +34,15 @@ os.makedirs(dir_xlabs_controlnets, exist_ok=True)
 dir_xlabs_flux = os.path.join(dir_xlabs, "flux")
 os.makedirs(dir_xlabs_flux, exist_ok=True)
 
+cache_dir = '/stable-diffusion-cache/models/xlabs'
 
 
-folder_paths.folder_names_and_paths["xlabs"] = ([dir_xlabs], folder_paths.supported_pt_extensions)
-folder_paths.folder_names_and_paths["xlabs_loras"] = ([dir_xlabs_loras], folder_paths.supported_pt_extensions)
-folder_paths.folder_names_and_paths["xlabs_controlnets"] = ([dir_xlabs_controlnets], folder_paths.supported_pt_extensions)
-folder_paths.folder_names_and_paths["xlabs_flux"] = ([dir_xlabs_flux], folder_paths.supported_pt_extensions)
-folder_paths.folder_names_and_paths["xlabs_flux_json"] = ([dir_xlabs_flux], set({'.json',}))
+
+folder_paths.folder_names_and_paths["xlabs"] = ([dir_xlabs, cache_dir], folder_paths.supported_pt_extensions)
+folder_paths.folder_names_and_paths["xlabs_loras"] = ([dir_xlabs_loras, os.path.join(cache_dir, "loras")], folder_paths.supported_pt_extensions)
+folder_paths.folder_names_and_paths["xlabs_controlnets"] = ([dir_xlabs_controlnets, os.path.join(cache_dir, "controlnets")], folder_paths.supported_pt_extensions)
+folder_paths.folder_names_and_paths["xlabs_flux"] = ([dir_xlabs_flux, os.path.join(cache_dir, "flux")], folder_paths.supported_pt_extensions)
+folder_paths.folder_names_and_paths["xlabs_flux_json"] = ([dir_xlabs_flux, os.path.join(cache_dir, "flux")], set({'.json',}))
 
 
 
