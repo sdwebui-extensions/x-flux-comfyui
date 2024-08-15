@@ -109,7 +109,7 @@ class LoadFluxLora:
         
         pbar.update(1)
         bi.model.to(device)
-        checkpoint, lora_rank = load_flux_lora(os.path.join(dir_xlabs_loras, lora_name))
+        checkpoint, lora_rank = load_flux_lora(folder_paths.get_full_path("xlabs_loras", lora_name))
         pbar.update(1)
         if not is_patched:
             patches=FluxUpdateModules(tyanochky)
@@ -200,7 +200,7 @@ class LoadFluxControlNet:
         device=mm.get_torch_device()
 
         controlnet = load_controlnet(model_name, device)
-        checkpoint = load_checkpoint_controlnet(os.path.join(dir_xlabs_controlnets, controlnet_path))
+        checkpoint = load_checkpoint_controlnet(folder_paths.get_full_path("xlabs_controlnets", controlnet_path))
         if checkpoint is not None:
             controlnet.load_state_dict(checkpoint)
             control_type = "canny"
