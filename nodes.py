@@ -414,7 +414,7 @@ class LoadFluxIPAdapter:
         offload_device=mm.unet_offload_device()
         pbar.update(1)
         ret_ipa = {}
-        path = os.path.join(dir_xlabs_ipadapters, ipadatper)
+        path = folder_paths.get_full_path("xlabs_ipadapters", ipadatper)
         ckpt = load_safetensors(path)
         pbar.update(1)
         path_clip = folder_paths.get_full_path("clip_vision", clip_vision)
