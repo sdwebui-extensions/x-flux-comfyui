@@ -554,7 +554,8 @@ class ApplyFluxIPAdapter:
         return {"required": { "model": ("MODEL",),
                               "ip_adapter_flux": ("IP_ADAPTER_FLUX",),
                               "image": ("IMAGE",),
-                              "strength_model": ("FLOAT", {"default": 0.6, "min": -100.0, "max": 100.0, "step": 0.01}),
+                              "ip_scale": ("FLOAT", {"default": 0.93, "min": 0.0, "max": 1.0, "step": 0.001}),
+                              #"text_scale": ("FLOAT", {"default": 1.0, "min": -100.0, "max": 100.0, "step": 0.01}),
                               }}
 
     RETURN_TYPES = ("MODEL",)
@@ -562,7 +563,7 @@ class ApplyFluxIPAdapter:
     FUNCTION = "applymodel"
     CATEGORY = "XLabsNodes"
 
-    def applymodel(self, model, ip_adapter_flux, image, strength_model):
+    def applymodel(self, model, ip_adapter_flux, image, ip_scale):
         debug=False
 
 
@@ -620,7 +621,7 @@ class ApplyFluxIPAdapter:
 
         ipad_blocks = []
         for block in ip_adapter_flux['double_blocks']:
-            ipad = IPProcessor(block.context_dim, block.hidden_dim, ip_projes, strength_model)
+            ipad = IPProcessor(block.context_dim, block.hidden_dim, ip_projes, ip_scale)
             ipad.load_state_dict(block.state_dict())
             ipad.in_hidden_states_neg = ip_neg_pr
             ipad.in_hidden_states_pos = ip_projes
@@ -652,6 +653,7 @@ class ApplyAdvancedFluxIPAdapter:
         return {"required": { "model": ("MODEL",),
                               "ip_adapter_flux": ("IP_ADAPTER_FLUX",),
                               "image": ("IMAGE",),
+                              #"text_scale": ("FLOAT", {"default": 1.0, "min": -100.0, "max": 100.0, "step": 0.01}),
                               "begin_strength": ("FLOAT", {"default": 0.0, "min": -100.0, "max": 100.0, "step": 0.01}),
                               "end_strength": ("FLOAT", {"default": 1.0, "min": -100.0, "max": 100.0, "step": 0.01}),
                               "smothing_type": (["Linear", "First half", "Second half", "Sigmoid"],),
@@ -737,7 +739,7 @@ class ApplyAdvancedFluxIPAdapter:
 
         ipad_blocks = []
         for i, block in enumerate(ip_adapter_flux['double_blocks']):
-            ipad = IPProcessor(block.context_dim, block.hidden_dim, ip_projes, strength_model[i])
+            ipad = IPProcessor(block.context_dim, block.hidden_dim, ip_projes, strength_model[i], text_scale)
             ipad.load_state_dict(block.state_dict())
             ipad.in_hidden_states_neg = ip_neg_pr
             ipad.in_hidden_states_pos = ip_projes
